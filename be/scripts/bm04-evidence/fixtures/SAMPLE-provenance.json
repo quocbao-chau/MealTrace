@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "sample": true,
+  "releaseSha": "1111111111111111111111111111111111111111",
+  "job": "backend",
+  "runId": "SAMPLE",
+  "runAttempt": 1,
+  "format": "trx",
+  "source": "Synthetic SAMPLE fixture",
+  "artifactSha256": "5f9f06abd8d39e8fa829bae1da27141cfb34c0c8e35d69f39362cbc49d36139a"
+}

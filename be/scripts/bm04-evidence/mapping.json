@@ -1,0 +1,569 @@
+{
+  "version": 1,
+  "cases": [
+    {
+      "id": "W01-01",
+      "owner": "Đạt",
+      "workflow": "WF-01",
+      "ci": true,
+      "mandatoryMainPath": true,
+      "description": "Valid OTP register với attempt staff role →account chỉ Parent, chưa child access; invalid/expired OTP400 không tạo user",
+      "requirements": "FR-18/22 / M1",
+      "evidenceSource": "ci",
+      "mappingState": "unresolved",
+      "tests": [
+        {
+          "job": "backend",
+          "identity": "MealTrace.Api.Tests.ParentSignupTests.PublicSignupRejectsPrivilegeOrLinkFields"
+        },
+        {
+          "job": "backend",
+          "identity": "MealTrace.Api.Tests.ParentSignupOtpTests.ExpiredOrDifferentPhoneCannotUseTheCode"
+        },
+        {
+          "job": "mobile",
+          "identity": "mobile/test/parent_registration_test.dart :: Signup projects only public fields and stores no session"
+        }
+      ]
+    },
+    {
+      "id": "W01-02",
+      "owner": "Đạt",
+      "workflow": "WF-01",
+      "ci": true,
+      "mandatoryMainPath": true,
+      "description": "Pending link→assigned reviewer approve→Parent child200; reject/cancel/revoke giữ history và access denied",
+      "requirements": "FR-02/10 / M1",
+      "evidenceSource": "ci",
+      "mappingState": "unresolved",
+      "tests": [
+        {
+          "job": "backend",
+          "identity": "MealTrace.Api.Tests.ParentLinkTests.PostgreSqlApprovalRequiresSchoolReviewBeforeChildAccess"
+        },
+        {
+          "job": "backend",
+          "identity": "MealTrace.Api.Tests.ParentLinkTests.DecisionsPreserveOwnershipAndEligibility"
+        },
+        {
+          "job": "mobile",
+          "identity": "mobile/test/parent_link_test.dart :: Review sends a boolean decision and the captured revision to the correct request"
+        }
+      ]
+    },
+    {
+      "id": "W01-03",
+      "owner": "Đạt",
+      "workflow": "WF-01",
+      "ci": true,
+      "mandatoryMainPath": false,
+      "description": "Teacher classA request classB child/import→403; owned roster200, không ghi DB ngoài scope",
+      "requirements": "FR-01/07/22 / M1",
+      "evidenceSource": "ci",
+      "mappingState": "unresolved",
+      "tests": [
+        {
+          "job": "backend",
+          "identity": "MealTrace.Api.Tests.PhaseOneHttpScopeTests.ClassesPortionsDecisionsAndExceptionWritesEnforceHttpRolesAndScope"
+        }
+      ]
+    },
+    {
+      "id": "W01-04",
+      "owner": "Đạt",
+      "workflow": "WF-01",
+      "ci": true,
+      "mandatoryMainPath": true,
+      "description": "XLSX invalid/duplicate rows preview có errors, confirm bị chặn không partial writes; valid import tạo đúng enrollment/history",
+      "requirements": "FR-01 / M1",
+      "evidenceSource": "ci",
+      "mappingState": "unresolved",
+      "tests": [
+        {
+          "job": "backend",
+          "identity": "MealTrace.Api.Tests.StudentImportTests.InvalidOrUnauthorizedImportsNeverWrite"
+        },
+        {
+          "job": "backend",
+          "identity": "MealTrace.Api.Tests.StudentImportTests.PostgreSqlImportsOnlyChildrenWithEnrollmentAndCannotReplay"
+        },
+        {
+          "job": "frontend",
+          "identity": "fe/src/features/workflow/StudentImportForm.test.tsx :: shows row errors and blocks confirmation without partially importing"
+        }
+      ]
+    },
+    {
+      "id": "W01-05",
+      "owner": "Đạt",
+      "workflow": "WF-01",
+      "ci": false,
+      "mandatoryMainPath": false,
+      "description": "Staging FE parent-link/roster ở320/390/768/desktop, thao tác Việt ngữ hoàn tất, không mất trạng thái hoặc lộ trẻ khác",
+      "requirements": "FR-01/02/18 / M1",
+      "evidenceSource": "manual",
+      "mappingState": "manual",
+      "tests": [
+        {
+          "job": "frontend",
+          "identity": "fe/src/features/workflow/ParentLinksPage.test.tsx :: school reviews a pending request with revision and verification reason"
+        }
+      ]
+    },
+    {
+      "id": "W02-01",
+      "owner": "Hùng",
+      "workflow": "WF-02",
+      "ci": true,
+      "mandatoryMainPath": true,
+      "description": "K draft/submit→A approve/publish200; reject có reason/resubmit new version; published v1 retained",
+      "requirements": "FR-05/13/23 / M3",
+      "evidenceSource": "ci",
+      "mappingState": "unresolved",
+      "tests": []
+    },
+    {
+      "id": "W02-02",
+      "owner": "Hùng",
+      "workflow": "WF-02",
+      "ci": true,
+      "mandatoryMainPath": true,
+      "description": "Independent g/ml/gross/edible fixtures →rounded kcal/macros đúng; missing density/macro422 không publish",
+      "requirements": "FR-11/12 / M3",
+      "evidenceSource": "ci",
+      "mappingState": "unresolved",
+      "tests": [
+        {
+          "job": "backend",
+          "identity": "MealTrace.Api.Tests.KitchenNutritionV13Tests.NutritionPerServingCoversKcalAndAllMacros"
+        },
+        {
+          "job": "backend",
+          "identity": "MealTrace.Api.Tests.KitchenNutritionV13Tests.MlLinesNeedAConfirmedDensityAndAreNeverTreatedAsGrams"
+        },
+        {
+          "job": "backend",
+          "identity": "MealTrace.Api.Tests.KitchenNutritionV13Tests.EdibleRatioIsAppliedOnlyToGrossWeights"
+        }
+      ]
+    },
+    {
+      "id": "W02-03",
+      "owner": "Hùng",
+      "workflow": "WF-02",
+      "ci": true,
+      "mandatoryMainPath": true,
+      "description": "Egg2 suppliers/2 receipts + correction v2 →distinct IDs/history preserved; nutrient SourceRef không bị thay",
+      "requirements": "FR-11/23 / M3",
+      "evidenceSource": "ci",
+      "mappingState": "unresolved",
+      "tests": []
+    },
+    {
+      "id": "W02-04",
+      "owner": "Hùng",
+      "workflow": "WF-02",
+      "ci": true,
+      "mandatoryMainPath": true,
+      "description": "Published recipe100g ×latest30 portions→estimate3000g/CSV; stale token409, old estimate unchanged",
+      "requirements": "FR-16/14/24 / M3",
+      "evidenceSource": "ci",
+      "mappingState": "unresolved",
+      "tests": []
+    },
+    {
+      "id": "W02-05",
+      "owner": "Hùng",
+      "workflow": "WF-02",
+      "ci": false,
+      "mandatoryMainPath": true,
+      "description": "Trường kiểm reference group/basis/source và manual hand-calculation; publish R1 rồi R2 correction vẫn As-Published R1",
+      "requirements": "FR-12/24 / M3",
+      "evidenceSource": "manual",
+      "mappingState": "manual",
+      "tests": [
+        {
+          "job": "backend",
+          "identity": "MealTrace.Api.Tests.KitchenNutritionV13Tests.AgeGroupComparisonUsesRecordedRangesWithTheirSource"
+        }
+      ]
+    },
+    {
+      "id": "W03-01",
+      "owner": "Nam",
+      "workflow": "WF-03",
+      "ci": true,
+      "mandatoryMainPath": true,
+      "description": "Tại21:00D−1 và07:00D, before accepted/exact denied theo API; đúng3 meal types; unknown type400",
+      "requirements": "FR-03/08/19 / M2",
+      "evidenceSource": "ci",
+      "mappingState": "unresolved",
+      "tests": [
+        {
+          "job": "backend",
+          "identity": "MealTrace.Api.Tests.SchoolTimeTests.MealSpecificCutoffCalculatesCorrectTimestampsForBreakfastAndDaytimeMeals"
+        },
+        {
+          "job": "backend",
+          "identity": "MealTrace.Api.Tests.SchoolTimeTests.ParentChangeAtExactCutoffCannotRewriteDecisionBeforeCutoff"
+        }
+      ]
+    },
+    {
+      "id": "W03-02",
+      "owner": "Nam",
+      "workflow": "WF-03",
+      "ci": true,
+      "mandatoryMainPath": true,
+      "description": "PG worker delayed/restart/multi-instance + late absence/transfer →one original snapshot, decisions trước cutoff",
+      "requirements": "FR-03/04/19 / M2",
+      "evidenceSource": "ci",
+      "mappingState": "unresolved",
+      "tests": [
+        {
+          "job": "backend",
+          "identity": "MealTrace.Api.Tests.MealSettlementWorkerTests.Worker_DelayedRecovery_AppliesAbsencesBeforeCutoff_AndIgnoresAbsencesAfterCutoff"
+        },
+        {
+          "job": "backend",
+          "identity": "MealTrace.Api.Tests.PostgresConcurrencyTests.SimultaneousAbsencesAndSettlementsDoNotDuplicateRows"
+        }
+      ]
+    },
+    {
+      "id": "W03-03",
+      "owner": "Nam",
+      "workflow": "WF-03",
+      "ci": true,
+      "mandatoryMainPath": false,
+      "description": "Teacher wrong class403; parent range update/cancel giữ locked snapshot và chỉ đổi future sessions; cancelled meal không settle",
+      "requirements": "FR-07/08/19/22 / M2",
+      "evidenceSource": "ci",
+      "mappingState": "unresolved",
+      "tests": [
+        {
+          "job": "backend",
+          "identity": "MealTrace.Api.Tests.MealSettlementWorkerTests.Worker_SkipsCancelledMealDay"
+        }
+      ]
+    },
+    {
+      "id": "W03-04",
+      "owner": "Nam",
+      "workflow": "WF-03",
+      "ci": false,
+      "mandatoryMainPath": false,
+      "description": "Staging clock-controlled breakfast/lunch/snack recovery từ shutdown →counts và event sources đúng, không manual settlement thay worker",
+      "requirements": "FR-03/04 / M2",
+      "evidenceSource": "manual",
+      "mappingState": "manual",
+      "tests": []
+    },
+    {
+      "id": "W04-01",
+      "owner": "Nam",
+      "workflow": "WF-04",
+      "ci": true,
+      "mandatoryMainPath": true,
+      "description": "Teacher amendment→Admin approve→new version; reject giữ counts, previous version không đổi",
+      "requirements": "FR-04/09 / M2",
+      "evidenceSource": "ci",
+      "mappingState": "confirmed",
+      "tests": [
+        {
+          "job": "backend",
+          "identity": "MealTrace.Api.Tests.PortionAmendmentTests.ApprovalCreatesNewVersionPreservesOriginalAndKitchenReadsAppliedTotal"
+        },
+        {
+          "job": "backend",
+          "identity": "MealTrace.Api.Tests.PortionAmendmentTests.RejectionKeepsCountAndStalePendingRequestCannotBeApproved"
+        }
+      ]
+    },
+    {
+      "id": "W04-02",
+      "owner": "Nam",
+      "workflow": "WF-04",
+      "ci": true,
+      "mandatoryMainPath": false,
+      "description": "PG2 approvals cùng source version →one applied/one409, no partial or duplicate rows",
+      "requirements": "FR-04/09/23 / M2",
+      "evidenceSource": "ci",
+      "mappingState": "confirmed",
+      "tests": [
+        {
+          "job": "backend",
+          "identity": "MealTrace.Api.Tests.PortionAmendmentTests.ConcurrentApprovalsOfDifferentRequestsOnSameSourceHaveOneWinner"
+        }
+      ]
+    },
+    {
+      "id": "W04-03",
+      "owner": "Nam",
+      "workflow": "WF-04",
+      "ci": true,
+      "mandatoryMainPath": true,
+      "description": "Amendment làm token đổi→old ack409/new ack201/retry same ID; Admin ack403, old ack retained",
+      "requirements": "FR-14/22 / M2",
+      "evidenceSource": "ci",
+      "mappingState": "unresolved",
+      "tests": [
+        {
+          "job": "backend",
+          "identity": "MealTrace.Api.Tests.KitchenSettlementRegressionTests.PostgreSqlNewSettlementVersionMustRequireFreshKitchenAcknowledgement"
+        },
+        {
+          "job": "mobile",
+          "identity": "mobile/test/kitchen_settlements_test.dart :: Admin reads the snapshot and history without reception controls"
+        }
+      ]
+    },
+    {
+      "id": "W04-04",
+      "owner": "Nam",
+      "workflow": "WF-04",
+      "ci": true,
+      "mandatoryMainPath": true,
+      "description": "A18→20,B10 latest total30, history sum48 không dùng; missing legacy roster không invent children",
+      "requirements": "FR-04/07/14 / M2",
+      "evidenceSource": "ci",
+      "mappingState": "unresolved",
+      "tests": [
+        {
+          "job": "backend",
+          "identity": "MealTrace.Api.Tests.KitchenSettlementRegressionTests.PostgreSqlMissingHistoricRosterMustNotInventAddedChildren"
+        }
+      ]
+    },
+    {
+      "id": "W05-01",
+      "owner": "Cường",
+      "workflow": "WF-05",
+      "ci": true,
+      "mandatoryMainPath": true,
+      "description": "API serving1000g split600/400, substitution có reason→201 đúng actor/class/session; v2 không overwrite v1",
+      "requirements": "FR-15/23 / M4",
+      "evidenceSource": "ci",
+      "mappingState": "unresolved",
+      "tests": []
+    },
+    {
+      "id": "W05-02",
+      "owner": "Cường",
+      "workflow": "WF-05",
+      "ci": true,
+      "mandatoryMainPath": true,
+      "description": "Durable queue file+metadata ghi rồi khởi tạo lại storage adapter→item/key/capturedAt còn nguyên",
+      "requirements": "FR-17 / M4",
+      "evidenceSource": "ci",
+      "mappingState": "unresolved",
+      "tests": []
+    },
+    {
+      "id": "W05-03",
+      "owner": "Cường",
+      "workflow": "WF-05",
+      "ci": true,
+      "mandatoryMainPath": false,
+      "description": "Response lost sau server commit, retry3 lần→same photo ID200, one final object; khác hash409",
+      "requirements": "FR-17 / M4",
+      "evidenceSource": "ci",
+      "mappingState": "unresolved",
+      "tests": []
+    },
+    {
+      "id": "W05-04",
+      "owner": "Cường",
+      "workflow": "WF-05",
+      "ci": true,
+      "mandatoryMainPath": false,
+      "description": "Approved+linked image bytes200; pending/rejected/unlinked/revoked403, anonymous401, private object không public",
+      "requirements": "FR-05/20/22 / M4",
+      "evidenceSource": "ci",
+      "mappingState": "unresolved",
+      "tests": []
+    },
+    {
+      "id": "W05-05",
+      "owner": "Cường",
+      "workflow": "WF-05",
+      "ci": false,
+      "mandatoryMainPath": true,
+      "description": "Real Android airplane capture→kill/relaunch→reconnect→sync, timestamps giữ đúng và local file không mất",
+      "requirements": "FR-17 / M4",
+      "evidenceSource": "device",
+      "mappingState": "manual",
+      "tests": []
+    },
+    {
+      "id": "W05-06",
+      "owner": "Cường",
+      "workflow": "WF-05",
+      "ci": false,
+      "mandatoryMainPath": true,
+      "description": "Device source picker cùng egg chọn2 receipts/quantity; source thiếu hiển thị gap, pending/rejected photo không xuất Parent",
+      "requirements": "FR-15/17/20 / M4",
+      "evidenceSource": "device",
+      "mappingState": "manual",
+      "tests": []
+    },
+    {
+      "id": "W06-01",
+      "owner": "Bảo",
+      "workflow": "WF-06",
+      "ci": true,
+      "mandatoryMainPath": true,
+      "description": "Monthly draft→approve→replay frozen inputs; later correction không đổi hash/totals/as-approved",
+      "requirements": "FR-06/24 / M5",
+      "evidenceSource": "ci",
+      "mappingState": "unresolved",
+      "tests": []
+    },
+    {
+      "id": "W06-02",
+      "owner": "Bảo",
+      "workflow": "WF-06",
+      "ci": true,
+      "mandatoryMainPath": true,
+      "description": "Trace serving→ingredient use→two source entries→suppliers; thiếu400g trả explicit gap, approval theo policy được reviewer chốt",
+      "requirements": "FR-06/15/23 / M5",
+      "evidenceSource": "ci",
+      "mappingState": "unresolved",
+      "tests": []
+    },
+    {
+      "id": "W06-03",
+      "owner": "Bảo",
+      "workflow": "WF-06",
+      "ci": true,
+      "mandatoryMainPath": false,
+      "description": "Nutrient100→110 trên1000g→delta+100; supplier-only correction→numeric delta0+source diff; old report intact",
+      "requirements": "FR-06/24 / M5",
+      "evidenceSource": "ci",
+      "mappingState": "unresolved",
+      "tests": []
+    },
+    {
+      "id": "W06-04",
+      "owner": "Bảo",
+      "workflow": "WF-06",
+      "ci": true,
+      "mandatoryMainPath": true,
+      "description": "CSV/PDF approved200 cùng frozen figures; quotes/newline/formula safe; reject/stale approval giữ history, export unapproved409",
+      "requirements": "FR-06/23/24 / M5",
+      "evidenceSource": "ci",
+      "mappingState": "unresolved",
+      "tests": []
+    },
+    {
+      "id": "W06-05",
+      "owner": "Bảo",
+      "workflow": "WF-06",
+      "ci": true,
+      "mandatoryMainPath": true,
+      "description": "Admin/report-grant scope/expiry và wrong roles; audit redaction+source history; malicious field không lộ secret/child data",
+      "requirements": "FR-22/23 / M5",
+      "evidenceSource": "ci",
+      "mappingState": "unresolved",
+      "tests": []
+    },
+    {
+      "id": "W06-06",
+      "owner": "Bảo",
+      "workflow": "WF-06",
+      "ci": false,
+      "mandatoryMainPath": false,
+      "description": "Staging3 năm: register≤5s/report≤10s theo protocol, PDF Việt ngữ/trang đủ,12-story pack/migration restore có chứng cứ",
+      "requirements": "FR-06/24 + NFR-06 / M5",
+      "evidenceSource": "manual",
+      "mappingState": "manual",
+      "tests": []
+    }
+  ],
+  "demos": [
+    {
+      "id": "DS-01a",
+      "kind": "main",
+      "workflow": "WF-01",
+      "owner": "Đạt",
+      "description": "S1 childCA chưa linked ở đầu story, valid OTP; Parent đăng ký/sign in, request link, TA/Admin review approve, Parent đọc childCA200. Expected account role chỉParent, pending chưa được dữ liệu trẻ, approved link có actor/time; enrollment đúng lớp. Chứng cứ UI + HTTP/DB + W01-01/02/04."
+    },
+    {
+      "id": "DS-01b",
+      "kind": "exception",
+      "workflow": "WF-01",
+      "owner": "Đạt",
+      "description": "OTP sai/hết hạn →400 không tạo account; hoặc link rejected có reason, Parent không đọc child; TA gọi classB403. Review/cancel/revoke không xóa lịch sử. Expected không cấp staff/child scope bằng client input. W01-01/02/03."
+    },
+    {
+      "id": "DS-02a",
+      "kind": "main",
+      "workflow": "WF-02",
+      "owner": "Hùng",
+      "description": "S3 recipe/source entries + S2 latest30; K draft daily menu và week read, submit, A approve/publish; xem kcal/macros và age comparison nguồn đã duyệt; tạo estimate100g×30=3000g cho recipe planning riêng, xuất CSV. Expected published version/inputs frozen, physical sources riêng nutrient reference. W02-01…05."
+    },
+    {
+      "id": "DS-02b",
+      "kind": "exception",
+      "workflow": "WF-02",
+      "owner": "Hùng",
+      "description": "recipe ml thiếu density hoặc legacy macro thiếu; publication422 có missing field, A reject với reason; revision sau correction mới được submit/approve. Unknown age range422/unknown rõ, không dùng0. Published v1 không thay đổi bởi revision rejected. W02-01/02/05."
+    },
+    {
+      "id": "DS-03a",
+      "kind": "main",
+      "workflow": "WF-03",
+      "owner": "Nam",
+      "description": "S1/S2, Parent absence trước cutoff, Teacher exception đúng lớp; chạy clock qua21:00/07:00, worker tự settle, restart/retry. Expected đúng cutoff từng bữa, before-cutoff decisions included, một original snapshot/lớp, actor system; không cần Admin click settle. W03-01/02."
+    },
+    {
+      "id": "DS-03b",
+      "kind": "exception",
+      "workflow": "WF-03",
+      "owner": "Nam",
+      "description": "late absence/cancel/replacement hoặc cancelled meal; delayed worker sau transfer07:15. Expected locked decision không đổi, cancelled không settle, future open meals còn áp dụng valid report; unauthorized Teacher403. Không sửa old cutoff để demo pass. W03-02/03/04."
+    },
+    {
+      "id": "DS-04a",
+      "kind": "main",
+      "workflow": "WF-04",
+      "owner": "Nam",
+      "description": "S2 A18/B10, Teacher gửi justified amendment+2, A approve tạo A-v2=20; Kitchen diff total30, acknowledge new token. Expected A-v1=18 retained, ack attributable/time và latest version, retry same ID. W04-01/03/04."
+    },
+    {
+      "id": "DS-04b",
+      "kind": "exception",
+      "workflow": "WF-04",
+      "owner": "Nam",
+      "description": "concurrent reviews cùng source hoặc rejected request, stale token ack. Expected loser409/rejected count unchanged; stale ack409 phải refresh; Admin ack403; cancelled session không tạo settlement. Không đếm28+20 thành48 latest. W04-02/03/04. Story có worker repeat để giữ nội dung demo §6.4 dù tên WF là amendments."
+    },
+    {
+      "id": "DS-05a",
+      "kind": "main",
+      "workflow": "WF-05",
+      "owner": "Cường",
+      "description": "S3 K chọn dish/version, actual20portions/egg1000g/600+400/source dates/cook actor/classA; Android airplane capture S4, kill/relaunch/reconnect; sync1 photo, A approve, PA view bytes. Expected actual lineage và capture/server receipt timestamps, private image scoped. W05-01/02/05/06."
+    },
+    {
+      "id": "DS-05b",
+      "kind": "exception",
+      "workflow": "WF-05",
+      "owner": "Cường",
+      "description": "mạng chập chờn làm mất response, retry3 lần; PX và Parent đã revoked gọi content; cùng key khác hash. Expected one evidence/object, same ID hoặc409conflict, guardian403; pending/rejected không xuất. Nếu thiếu sourceB400, serving ghi gap rõ, không giả supplier và không báo trace complete. W05-03/04/06, W06-02 hỗ trợ nhưng không đếm lại ownership."
+    },
+    {
+      "id": "DS-06a",
+      "kind": "main",
+      "workflow": "WF-06",
+      "owner": "Bảo",
+      "description": "S3/S4 complete serving, Admin generate monthly actual report lớpA, approve, export **cả PDF và CSV**, trace tới hai dated source entries và responsible staff. Expected1000kcal total/50 mỗi phần theo fixture, frozen IDs/values/hash; report settled vs actual metrics tách biệt. Inspector grant lớpA read được, không admin write. W06-01/02/04/05."
+    },
+    {
+      "id": "DS-06b",
+      "kind": "exception",
+      "workflow": "WF-06",
+      "owner": "Bảo",
+      "description": "sau approval, correct nutrient100→110 hoặc actual quantity/source; request Recomputed, xem delta+100kcal khi quantity1000g giữ nguyên và reason/changed IDs. As-Approved R1/hash/export vẫn1000. Supplier-only correction có source diff dù delta0; missing400g source tạo flagged draft, approval được xử lý theo policy A/B đã chốt với reviewer và không che giấu gap. W06-02/03, không “sửa” R1 để khớp số mới."
+    }
+  ]
+}

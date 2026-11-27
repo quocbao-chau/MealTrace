@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "sample": true,
+  "releaseSha": "1111111111111111111111111111111111111111",
+  "runs": [
+    {
+      "path": "SAMPLE-backend.trx",
+      "provenance": "SAMPLE-provenance.json"
+    }
+  ]
+}
